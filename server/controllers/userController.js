@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import { validationResult } from "express-validator";
 import { nanoid } from "nanoid";
-import jwt from "jsonwebtoken";
+import generateToken from "../utils/token.js";
 
 // ===========================
 // POST, /api/users/register
@@ -39,36 +39,26 @@ export const register = async (req, res) => {
 // POST, /api/users/login
 // public route
 export const login = async (req, res) => {
+	const { email, password } = req.body;
 	try {
-		const { email, password } = req.body;
-		// check of user exist
+		if (!email || !password)
+			return res.status(401).json({ message: "all fields are required" });
 		const user = await User.findOne({ email });
-		if (!user) {
-			res.status(401).res.json({
-				msg: "There is no user of that email, please register an account."
+
+		if (user && (await user.matchPassword(password))) {
+			res.json({
+				_id: user._id,
+				email: user.email,
+				name: user.name,
+				isAdmin: user.isAdmin,
+				token: generateToken(user._id)
 			});
+		} else {
+			res.status(401);
+			throw new Error("Invalid email or password");
 		}
-		// authenticate the user
-		if (!user.authenticate(password)) {
-			res.status(400).json({ msg: "Wrong email and password" });
-		}
-
-		// generate a token and send to client
-		const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-			expiresIn: "1d"
-		});
-
-		res.cookie("token", token, { expiresIn: "1d" });
-		res.json({
-			_id: user._id,
-			username: user.username,
-			name: user.name,
-			email: user.email,
-			role: user.role,
-			token
-		});
 	} catch (error) {
-		console.log(error.message);
-		res.status(500).json({ msg: "Server Error..." });
+		console.log(error);
+		res.status(500).json({ msg: "Invalid email and password" });
 	}
 };

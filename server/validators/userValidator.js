@@ -1,6 +1,6 @@
 import { check } from "express-validator";
 
-const registerValidation = [
+export const registerValidation = [
 	check("name")
 		.not()
 		.isEmpty()
@@ -12,5 +12,3 @@ const registerValidation = [
 		.isLength({ min: 6 })
 		.withMessage("Password must be at least 6 characters long")
 ];
-
-export default registerValidation;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
 	{
@@ -29,11 +29,10 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true
 		},
-		hashed_password: {
+		password: {
 			type: String,
 			required: true
 		},
-		salt: String,
 		about: {
 			type: String
 		},
@@ -53,41 +52,19 @@ const userSchema = new mongoose.Schema(
 	{ timestamp: true }
 );
 
-userSchema
-	.virtual("password")
-	.set(function(password) {
-		// create a temporarity variable called _password
-		this._password = password;
-		// generate salt
-		this.salt = this.makeSalt();
-		// encryptPassword
-		this.hashed_password = this.encryptPassword(password);
-	})
-	.get(function() {
-		return this._password;
-	});
-
-userSchema.methods = {
-	authenticate: function(plainText) {
-		return this.encryptPassword(plainText) === this.hashed_password;
-	},
-
-	encryptPassword: function(password) {
-		if (!password) return "";
-		try {
-			return crypto
-				.createHmac("sha1", this.salt)
-				.update(password)
-				.digest("hex");
-		} catch (err) {
-			return "";
-		}
-	},
-
-	makeSalt: function() {
-		return Math.round(new Date().valueOf() * Math.random()) + "";
-	}
+// compare entered password with saved password using bcrypt
+userSchema.methods.matchPassword = async function(enteredPassword) {
+	return await bcrypt.compare(enteredPassword, this.password);
 };
+// hash password
+userSchema.pre("save", async function(next) {
+	if (!this.isModified("password")) {
+		next();
+	}
+	const salt = await bcrypt.genSaltSync(10);
+
+	this.password = await bcrypt.hash(this.password, salt);
+});
 
 const User = mongoose.model("User", userSchema);
 
