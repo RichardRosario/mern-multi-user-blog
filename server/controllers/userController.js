@@ -53,12 +53,18 @@ export const login = async (req, res) => {
 				isAdmin: user.isAdmin,
 				token: generateToken(user._id)
 			});
+			res.cookie("token", token, { expiresIn: "1d" });
 		} else {
 			res.status(401);
 			throw new Error("Invalid email or password");
 		}
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ msg: "Invalid email and password" });
+		res.status(400).json({ msg: "Invalid email and password" });
 	}
+};
+
+export const signOut = (req, res) => {
+	res.clearCookie("token");
+	res.json({ msg: "cookie is cleared" });
 };
