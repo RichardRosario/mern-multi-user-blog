@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { signin } from "../../actions/auth";
 import Router from "next/router";
 
 const SigninComponent = () => {
 	const [values, setValues] = useState({
-		email: "ryan@gmail.com",
+		email: "catrosits@gmail.com",
 		password: "rrrrrr",
 		error: "",
 		loading: false,
@@ -67,7 +67,7 @@ const SigninComponent = () => {
 				</div>
 
 				<div>
-					<button className='btn btn-primary'>Signup</button>
+					<button className='btn btn-primary'>Signin</button>
 				</div>
 			</form>
 		);

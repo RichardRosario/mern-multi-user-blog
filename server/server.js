@@ -4,7 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import dbConn from "./config/db.js";
-import userRoutes from "./routes/userRoutes.js";
+import auth from "./routes/authRoutes.js";
+// import userRoutes from "./routes/userRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 
 dotenv.config();
@@ -21,8 +22,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // routes
-app.use("/api/users", userRoutes);
-app.use("/api/blog", blogRoutes);
+app.use("/api", auth);
+app.use("/api", blogRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server running at port ${port}`));
