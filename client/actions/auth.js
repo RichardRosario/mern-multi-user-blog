@@ -2,7 +2,7 @@ import fetch from "isomorphic-fetch";
 // import { API } from "../config";
 
 export const signup = user => {
-	return fetch(`api/users/signup`, {
+	return fetch(`api/signup`, {
 		method: "POST",
 		headers: {
 			Accept: "application/json",

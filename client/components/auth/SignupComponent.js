@@ -42,8 +42,9 @@ const SignupComponent = () => {
 		setValues({ ...values, error: false, [name]: e.target.value });
 	};
 
-	const showError = () =>
+	const showError = () => {
 		error ? <div className='alert alert-danger'>{error}</div> : "";
+	};
 	const showLoading = () =>
 		loading ? <div className='alert alert-info'>{loading}</div> : "";
 	const showMessage = () =>

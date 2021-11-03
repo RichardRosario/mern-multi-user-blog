@@ -1,14 +1,6 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-<<<<<<< HEAD
-  "/_error": "pages/_error.js"
-=======
   "/_error": "pages/_error.js",
-<<<<<<< HEAD
   "/": "pages/index.js"
->>>>>>> frontend
-=======
-  "/signup": "pages/signup.js"
->>>>>>> frontend
 }
