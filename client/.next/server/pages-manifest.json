@@ -5,6 +5,10 @@
   "/_error": "pages/_error.js"
 =======
   "/_error": "pages/_error.js",
+<<<<<<< HEAD
   "/": "pages/index.js"
+>>>>>>> frontend
+=======
+  "/signup": "pages/signup.js"
 >>>>>>> frontend
 }

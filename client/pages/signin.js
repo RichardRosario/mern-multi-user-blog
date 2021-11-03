@@ -1,9 +1,15 @@
 import Layout from "../components/Layout";
+import SigninComponent from "../components/auth/SigninComponent";
 
 const Signin = () => {
 	return (
 		<Layout>
-			<h2>Signin page</h2>
+			<div className='row'>
+				<div className='col-md-6 offset-md-3'>
+					<h2>Sign in to your account</h2>
+					<SigninComponent />
+				</div>
+			</div>
 		</Layout>
 	);
 };

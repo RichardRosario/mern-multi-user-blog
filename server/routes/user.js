@@ -1,11 +1,14 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const { requireSignin, authMiddleware, adminMiddleware } = require('../controllers/auth');
-const { read, publicProfile, update, photo } = require('../controllers/user');
+import {
+	authMiddleware,
+	adminMiddleware
+} from "../controllers/authController.js";
+import { read, publicProfile, update, photo } from "../controllers/user.js";
 
-router.get('/user/profile', requireSignin, authMiddleware, read);
-router.get('/user/:username', publicProfile);
-router.put('/user/update', requireSignin, authMiddleware, update);
-router.get('/user/photo/:username', photo);
+router.get("/user/profile", authMiddleware, read);
+router.get("/user/:username", publicProfile);
+router.put("/user/update", authMiddleware, update);
+router.get("/user/photo/:username", photo);
 
-module.exports = router;
+export default router;

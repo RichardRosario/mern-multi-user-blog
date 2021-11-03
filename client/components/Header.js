@@ -30,7 +30,7 @@ const Header = () => {
 				<Collapse isOpen={isOpen} navbar>
 					<Nav className='ml-auto' navbar>
 						<NavItem>
-							<NavLink href='/components/'>Components</NavLink>
+							<NavLink href='/signin'>Signin</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink href='https://github.com/RichardRosario'>GitHub</NavLink>

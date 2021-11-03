@@ -6,7 +6,7 @@ import generateToken from "../utils/token.js";
 // ===========================
 // POST, /api/users/register
 // public route
-export const register = async (req, res) => {
+export const signup = async (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ error: errors.array()[0].msg });
