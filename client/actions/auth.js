@@ -1,8 +1,9 @@
 import fetch from "isomorphic-fetch";
-// import { API } from "../config";
+import { API, api } from "../config";
+import axios from "axios";
 
 export const signup = user => {
-	return fetch(`api/signup`, {
+	return fetch(`${api}/signup`, {
 		method: "POST",
 		headers: {
 			Accept: "application/json",
@@ -13,18 +14,19 @@ export const signup = user => {
 		.then(response => {
 			return response.json();
 		})
-		.catch(err => console.log(err));
+		.catch(err => console.error(err));
 };
 
-export const signin = (user, setCookie) => {
-	return fetch(`${API}/signin`, {
+export const login = (user, setCookie) => {
+	console.log(user);
+	return fetch(`${api}/login`, {
 		method: "POST",
 		headers: {
 			Accept: "application/json",
 			"Content-Type": "application/json"
 		},
 		body: JSON.stringify(user),
-		cookie: setCookie()
+		cookie: setCookie
 	})
 		.then(response => {
 			return response.json();

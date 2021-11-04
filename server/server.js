@@ -18,9 +18,8 @@ dbConn();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-if (process.env.NODE_ENV === "development") {
-	app.use(cors({ origin: `${process.env.CLIENT_URL}`, credentials: true }));
-}
+
+app.use(cors());
 
 // routes
 app.use("/api", authRoutes);

@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
-import exressJwt from "express-jwt";
+import expressJwt from "express-jwt";
 
 // POST, api/signup
 export const signup = (req, res) => {
@@ -17,17 +17,10 @@ export const signup = (req, res) => {
 		let profile = `${process.env.CLIENT_URL}/profile/${username}`;
 
 		let newUser = new User({ name, email, password, profile, username });
-		newUser.save((err, success) => {
-			if (err) {
-				return res.status(400).json({
-					error: err
-				});
-			}
 
-			res.json({
-				message: "Signup success! Please signin."
-			});
-		});
+		newUser.save();
+
+		res.json(newUser);
 	});
 };
 
@@ -63,3 +56,15 @@ export const login = (req, res) => {
 		res.json({ token, user: { _id, username, name, email, role } });
 	});
 };
+
+// ====================
+//
+export const signOut = (req, res) => {
+	res.clearCookie("token");
+	res.json({
+		message: "Sign out successful"
+	});
+};
+
+// ============-==
+// protected routes

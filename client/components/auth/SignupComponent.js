@@ -5,7 +5,7 @@ const SignupComponent = () => {
 	const [values, setValues] = useState({
 		name: "Richard",
 		email: "catrosits@gmail.com",
-		password: "rrrrrr",
+		password: "123456",
 		error: "",
 		loading: false,
 		message: "",

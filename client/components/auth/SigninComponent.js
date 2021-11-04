@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { signin } from "../../actions/auth";
+import { login } from "../../actions/auth";
 import Router from "next/router";
 
 const SigninComponent = () => {
 	const [values, setValues] = useState({
 		email: "catrosits@gmail.com",
-		password: "rrrrrr",
+		password: "123456",
 		error: "",
 		loading: false,
 		message: "",
@@ -20,8 +20,8 @@ const SigninComponent = () => {
 		setValues({ ...values, loading: true, error: false });
 		const user = { email, password };
 
-		signin(user).then(data => {
-			if (data.error) {
+		login(user).then(data => {
+			if (data) {
 				setValues({ ...values, error: data.error, loading: false });
 			} else {
 				// save user token to cookie
