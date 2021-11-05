@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { signup } from "../../actions/auth";
+import Router from "next/router";
 
 const SignupComponent = () => {
 	const [values, setValues] = useState({
@@ -21,7 +22,7 @@ const SignupComponent = () => {
 		const user = { name, email, password };
 
 		signup(user).then(data => {
-			if (data) {
+			if (data.error) {
 				setValues({ ...values, error: data.error, loading: false });
 			} else {
 				setValues({
@@ -31,13 +32,13 @@ const SignupComponent = () => {
 					password: "",
 					error: "",
 					loading: false,
-					message: message,
+					message: data.message,
 					showForm: false
 				});
+				Router.push("/login");
 			}
 		});
 	};
-
 	const handleChange = name => e => {
 		setValues({ ...values, error: false, [name]: e.target.value });
 	};
@@ -48,7 +49,7 @@ const SignupComponent = () => {
 	const showLoading = () =>
 		loading ? <div className='alert alert-info'>{loading}</div> : "";
 	const showMessage = () =>
-		message ? <div className='alert alert-warning'>{message}</div> : "";
+		message ? <div className='alert alert-warning'>{data.message}</div> : "";
 
 	const signupForm = () => {
 		return (

@@ -18,7 +18,6 @@ export const signup = user => {
 };
 
 export const login = (user, setCookie) => {
-	console.log(user);
 	return fetch(`${api}/login`, {
 		method: "POST",
 		headers: {

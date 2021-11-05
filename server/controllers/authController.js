@@ -20,7 +20,7 @@ export const signup = (req, res) => {
 
 		newUser.save();
 
-		res.json(newUser);
+		res.json({ message: "Signup is successful. Please login!" });
 	});
 };
 

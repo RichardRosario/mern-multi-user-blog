@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { APP_NAME } from "../config";
+import { isAuth } from "../actions/auth";
+
 import {
 	Collapse,
 	Navbar,
@@ -29,12 +31,27 @@ const Header = () => {
 				<NavbarToggler onClick={toggle} />
 				<Collapse isOpen={isOpen} navbar>
 					<Nav className='ml-auto' navbar>
-						<NavItem>
-							<NavLink href='/signin'>Signin</NavLink>
-						</NavItem>
-						<NavItem>
-							<NavLink href='https://github.com/RichardRosario'>GitHub</NavLink>
-						</NavItem>
+						{isAuth ? (
+							<>
+								<NavItem>
+									<NavLink href='/blog'>MyBlog</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink href='/logout'>Logout</NavLink>
+								</NavItem>
+							</>
+						) : (
+							<>
+								<NavItem>
+									<NavLink href='/login'>Login</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink href='https://github.com/RichardRosario'>
+										GitHub
+									</NavLink>
+								</NavItem>
+							</>
+						)}
 					</Nav>
 				</Collapse>
 			</Navbar>
