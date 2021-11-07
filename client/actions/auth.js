@@ -36,10 +36,9 @@ export const login = (user, setCookie) => {
 
 // GET, /logout
 
-export const logout = next => {
+export const logout = () => {
 	removeCookie("token");
 	removeLocalStorage("user");
-	next();
 
 	try {
 		return fetch(`/${api}/logout`, {
