@@ -13,9 +13,6 @@ export default function Home() {
 			</Head>
 			<Layout>
 				<h1>Hello world, this is NEXT</h1>
-				<Link href='/signup'>
-					<a>Signup</a>
-				</Link>
 			</Layout>
 		</div>
 	);

@@ -35,7 +35,7 @@ const SignupComponent = () => {
 					message: data.message,
 					showForm: false
 				});
-				Router.push("/login");
+				// Router.push("/login");
 			}
 		});
 	};
@@ -49,7 +49,7 @@ const SignupComponent = () => {
 	const showLoading = () =>
 		loading ? <div className='alert alert-info'>{loading}</div> : "";
 	const showMessage = () =>
-		message ? <div className='alert alert-warning'>{data.message}</div> : "";
+		message ? <div className='alert alert-success'>{message}</div> : "";
 
 	const signupForm = () => {
 		return (
@@ -93,9 +93,9 @@ const SignupComponent = () => {
 
 	return (
 		<React.Fragment>
-			{showError}
-			{showLoading}
-			{showMessage}
+			{showError()}
+			{showLoading()}
+			{showMessage()}
 			{showForm && signupForm()}
 		</React.Fragment>
 	);

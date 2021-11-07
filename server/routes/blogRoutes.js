@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/blog", (req, res) => {
 	res.json({ time: Date().toString() });
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, setCookie, setLocalStorage, isAuth } from "../../actions/auth";
+import { login, authenticate } from "../../actions/auth";
 import Router from "next/router";
 
 const LoginComponent = () => {
@@ -24,23 +24,12 @@ const LoginComponent = () => {
 			if (data.error) {
 				setValues({ ...values, error: data.error, loading: false });
 			} else {
-				setValues({
-					...values,
-					name: "",
-					email: "",
-					password: "",
-					error: "",
-					loading: false,
-					message: data.message,
-					showForm: false,
-					token: setCookie,
-					setStorage: setLocalStorage,
-					isAuth
-				});
 				// save user token to cookie
 				// save user info to localstorage
 				// authenticate user
-				Router.push(`/`);
+				authenticate(data, () => {
+					Router.push(`/`);
+				});
 			}
 		});
 	};
