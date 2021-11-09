@@ -1,11 +1,11 @@
 import User from "../models/userModel.js";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
-import expressJwt from "express-jwt";
+import exJwt from "express-jwt";
 
 // POST, api/signup
-export const signup = (req, res) => {
-	User.findOne({ email: req.body.email }).exec((err, user) => {
+export const signup = async (req, res) => {
+	await User.findOne({ email: req.body.email }).exec((err, user) => {
 		if (user) {
 			return res.status(400).json({
 				error: "Email is taken"
@@ -27,9 +27,9 @@ export const signup = (req, res) => {
 // =====================
 // POST, api/signin
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
 	const { email, password } = req.body;
-	User.findOne({ email }).exec((err, user) => {
+	await User.findOne({ email }).exec((err, user) => {
 		if (err || !user) {
 			return res.status(400).json({
 				error: "Email does not exist."
@@ -42,18 +42,17 @@ export const login = (req, res) => {
 			});
 		}
 		// generate token
-		const token = jwt.sign(
-			{
-				_id: user._id
-			},
-			`${process.env.JWT_SECRET}`,
-			{ expiresIn: "1d" }
-		);
+		const token = jwt.sign({ _id: user._id }, `${process.env.JWT_SECRET}`, {
+			expiresIn: "1d"
+		});
 
 		res.cookie("token", token, { expiresIn: "1d" });
 
 		const { _id, username, name, email, role } = user;
-		res.json({ token, user: { _id, username, name, email, role } });
+		return res.json({
+			token,
+			user: { _id, username, name, email, role }
+		});
 	});
 };
 
@@ -68,3 +67,23 @@ export const signOut = (req, res) => {
 
 // ============-==
 // protected routes
+export const isSignedIn = async (req, res, next) => {
+	let token;
+
+	if (
+		req.headers &&
+		req.headers.authorization &&
+		req.headers.authorization.startsWith("Bearer")
+	) {
+		try {
+			token = req.headers.authorization.split(" ")[1];
+
+			req.user = jwt.verify(token, `${process.env.JWT_SECRET}`);
+
+			next();
+		} catch (error) {
+			res.status(401);
+			throw new Error("Not Authorized, token failed.");
+		}
+	}
+};

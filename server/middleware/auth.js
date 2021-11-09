@@ -1,42 +1,43 @@
-import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 
-const protectRoute = asyncHandler(async (req, res, next) => {
-	let token;
+export const read = (req, res) => {
+	req.profile.hashed_password = undefined;
 
-	if (
-		req.headers.authorization &&
-		req.headers.authorization.startsWith("Bearer")
-	) {
-		try {
-			token = req.headers.authorization.split(" ")[1];
+	return res.json(req.profile);
+};
+// auth middleware
+export const authencatedUser = async (req, res, next) => {
+	const authUserId = req.user._id;
 
-			const tokenVerify = jwt.verify(token, process.env.JWT_SECRET);
-
-			req.user = await User.findById(tokenVerify.id).select("-password");
-
-			next();
-		} catch (error) {
-			console.log(error);
-			res.status(401);
-			throw new Error("Not Authorized, token failed.");
+	await User.findById({ _id: authUserId }).exec((err, user) => {
+		if (err || !user) {
+			return res.status(400).json({
+				error: "User not found"
+			});
 		}
-	}
 
-	if (!token) {
-		res.status(401);
-		throw new Error("Not Authorized, no token.");
-	}
-});
-
-const adminUser = (req, res, next) => {
-	if (req.user && req.user.role !== 1) {
+		req.profile = user;
+		console.log(user);
 		next();
-	} else {
-		res.status(401);
-		throw new Error("No admin authorization");
-	}
+	});
 };
 
-export { protectRoute, adminUser };
+export const adminUser = async (req, res, next) => {
+	const adminUserId = req.user._id;
+	await User.findById({ _id: adminUserId }).exec((err, user) => {
+		if ((err, !user)) {
+			return res.status(400).json({
+				error: "Amdin User not found"
+			});
+		}
+
+		if (user.role !== 1) {
+			return res.status(400).json({
+				error: "Admin area: Access denied"
+			});
+		}
+		req.profile = user;
+		console.log(user);
+		next();
+	});
+};
