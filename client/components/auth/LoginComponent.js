@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, authenticate } from "../../actions/auth";
+import { login, authenticate, isAuth } from "../../actions/auth";
 import Router from "next/router";
 
 const LoginComponent = () => {
@@ -28,7 +28,11 @@ const LoginComponent = () => {
 				// save user info to localstorage
 				// authenticate user
 				authenticate(data, () => {
-					Router.push(`/`);
+					if (isAuth() && isAuth().role === 1) {
+						Router.push(`/admin`);
+					} else {
+						Router.push(`/user`);
+					}
 				});
 			}
 		});

@@ -1,7 +1,9 @@
 import User from "../models/userModel.js";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import jwt from "jsonwebtoken";
-import exJwt from "express-jwt";
+// import exJwt from "express-jwt";
+
+const nanoid = customAlphabet("1234567890catrosits", 10);
 
 // POST, api/signup
 export const signup = async (req, res) => {
@@ -66,18 +68,20 @@ export const signOut = (req, res) => {
 };
 
 // ============-==
-// protected routes
+// protected routes, verify token
 export const isSignedIn = async (req, res, next) => {
 	let token;
 
 	if (
+		// check if user is logged in and with bearer
 		req.headers &&
 		req.headers.authorization &&
 		req.headers.authorization.startsWith("Bearer")
 	) {
 		try {
+			// assign bearer value to token
 			token = req.headers.authorization.split(" ")[1];
-
+			// verify token with jwt secret and assign it to req.user
 			req.user = jwt.verify(token, `${process.env.JWT_SECRET}`);
 
 			next();
