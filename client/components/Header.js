@@ -10,11 +10,7 @@ import {
 	NavbarBrand,
 	Nav,
 	NavItem,
-	NavLink,
-	UncontrolledDropdown,
-	DropdownToggle,
-	DropdownMenu,
-	DropdownItem
+	NavLink
 } from "reactstrap";
 
 const Header = () => {
@@ -25,37 +21,40 @@ const Header = () => {
 	};
 
 	return (
-		<div>
-			<Navbar color='light' light expand='md'>
-				<NavbarBrand href='/'>rsBlog</NavbarBrand>
-				<NavbarToggler onClick={toggle} />
-				<Collapse isOpen={isOpen} navbar>
-					<Nav className='ml-auto' navbar>
-						{isAuth() ? (
-							<>
-								<NavItem>
-									<NavLink href='/blog'>MyBlog</NavLink>
-								</NavItem>
-								<NavItem>
-									<NavLink href='/logout' onClick={() => logout()}>
-										Logout
-									</NavLink>
-								</NavItem>
-							</>
-						) : (
-							<>
-								<NavItem>
-									<NavLink href='/login'>Login</NavLink>
-								</NavItem>
-								<NavItem>
-									<NavLink href='/signup'>Register</NavLink>
-								</NavItem>
-							</>
-						)}
-					</Nav>
-				</Collapse>
-			</Navbar>
-		</div>
+		<Navbar color='light' light expand='md'>
+			<NavbarBrand href='/'>rsBlog</NavbarBrand>
+			<NavbarToggler onClick={toggle} />
+			<Collapse isOpen={isOpen} navbar>
+				<Nav className='ml-auto' navbar>
+					{isAuth() ? (
+						<>
+							<NavItem>
+								<NavLink
+									href={isAuth().role === 1 ? "/admin" : "/user"}
+									onClick={() => logout()}
+								>
+									Dashboard
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink href='/logout' onClick={() => logout()}>
+									Logout
+								</NavLink>
+							</NavItem>
+						</>
+					) : (
+						<>
+							<NavItem>
+								<NavLink href='/login'>Login</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink href='/signup'>Register</NavLink>
+							</NavItem>
+						</>
+					)}
+				</Nav>
+			</Collapse>
+		</Navbar>
 	);
 };
 

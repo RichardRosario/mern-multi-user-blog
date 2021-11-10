@@ -1,10 +1,5 @@
 import User from "../models/userModel.js";
 
-export const read = (req, res) => {
-	req.profile.hashed_password = undefined;
-
-	return res.json(req.profile);
-};
 // auth middleware
 export const authencatedUser = async (req, res, next) => {
 	const authUserId = req.user._id;
@@ -24,10 +19,11 @@ export const authencatedUser = async (req, res, next) => {
 
 export const adminUser = async (req, res, next) => {
 	const adminUserId = req.user._id;
+
 	await User.findById({ _id: adminUserId }).exec((err, user) => {
 		if ((err, !user)) {
 			return res.status(400).json({
-				error: "Amdin User not found"
+				error: "Admin User not found"
 			});
 		}
 
