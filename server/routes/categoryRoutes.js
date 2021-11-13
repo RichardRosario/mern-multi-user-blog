@@ -8,7 +8,12 @@ import { categoryValidator } from "../validators/category.js";
 import { authencatedUser, adminUser } from "../middleware/auth.js";
 import { isSignedIn } from "../controllers/authController.js";
 
-import { create } from "../controllers/categoryController.js";
+import {
+	create,
+	getCategories,
+	getCat,
+	removeCat
+} from "../controllers/categoryController.js";
 
 router.post(
 	"/category/create",
@@ -19,5 +24,20 @@ router.post(
 	adminUser,
 	create
 );
+router.get(
+	"/categories",
+	isSignedIn,
+	authencatedUser,
+	adminUser,
+	getCategories
+);
 
+router.get("/category/:slug", isSignedIn, authencatedUser, adminUser, getCat);
+router.delete(
+	"/category/:slug",
+	isSignedIn,
+	authencatedUser,
+	adminUser,
+	removeCat
+);
 export default router;
