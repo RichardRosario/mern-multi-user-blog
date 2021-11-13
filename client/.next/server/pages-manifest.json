@@ -1,15 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-<<<<<<< HEAD
-  "/_error": "pages/_error.js",
-<<<<<<< HEAD
-  "/logout": "pages/logout.js"
-=======
-  "/signup": "pages/signup.js",
-  "/login": "pages/login.js"
->>>>>>> adminAccess
-=======
   "/_error": "pages/_error.js"
->>>>>>> adminAccess
 }
