@@ -1,7 +1,6 @@
 import User from "../models/userModel.js";
 import { customAlphabet } from "nanoid";
 import jwt from "jsonwebtoken";
-// import exJwt from "express-jwt";
 
 const nanoid = customAlphabet("1234567890catrosits", 10);
 
@@ -47,9 +46,9 @@ export const login = async (req, res) => {
 		const token = jwt.sign({ _id: user._id }, `${process.env.JWT_SECRET}`, {
 			expiresIn: "1d"
 		});
-
+		// generate cooke with the token
 		res.cookie("token", token, { expiresIn: "1d" });
-
+		// destructure the user object
 		const { _id, username, name, email, role } = user;
 		return res.json({
 			token,

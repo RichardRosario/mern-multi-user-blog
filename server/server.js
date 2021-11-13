@@ -6,9 +6,9 @@ import bodyParser from "body-parser";
 
 import dbConn from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-// import userRoutes from "./routes/userRoutes.js";
-import blogRoutes from "./routes/blogRoutes.js";
+// import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -24,7 +24,7 @@ app.use(cors());
 
 // routes
 app.use("/api", authRoutes);
-app.use("/api", blogRoutes);
+app.use("/api/blog", categoryRoutes);
 app.use("/api/users", userRoutes);
 
 const port = process.env.PORT;

@@ -26,29 +26,45 @@ const Header = () => {
 			<NavbarToggler onClick={toggle} />
 			<Collapse isOpen={isOpen} navbar>
 				<Nav className='ml-auto' navbar>
-					{isAuth() ? (
-						<>
-							<NavItem>
-								<NavLink
-									href={isAuth().role === 1 ? "/admin" : "/user"}
-									onClick={() => logout()}
-								>
-									Dashboard
-								</NavLink>
-							</NavItem>
-							<NavItem>
-								<NavLink href='/logout' onClick={() => logout()}>
+					{isAuth() && isAuth().role === 1 && (
+						<NavItem>
+							<Link href='/admin'>
+								<NavLink style={{ cursor: "pointer" }}>{`${
+									isAuth().name
+								}'s Dashboard`}</NavLink>
+							</Link>
+						</NavItem>
+					)}
+					{isAuth() && isAuth().role === 0 && (
+						<NavItem>
+							<Link href='/user'>
+								<NavLink style={{ cursor: "pointer" }}>{`${
+									isAuth().name
+								}'s Dashboard`}</NavLink>
+							</Link>
+						</NavItem>
+					)}
+					{isAuth() && (
+						<NavItem>
+							<Link href='/logout'>
+								<NavLink style={{ cursor: "pointer" }} onClick={() => logout()}>
 									Logout
 								</NavLink>
-							</NavItem>
-						</>
-					) : (
+							</Link>
+						</NavItem>
+					)}
+
+					{!isAuth() && (
 						<>
 							<NavItem>
-								<NavLink href='/login'>Login</NavLink>
+								<Link href='/login'>
+									<NavLink style={{ cursor: "pointer" }}>Login</NavLink>
+								</Link>
 							</NavItem>
 							<NavItem>
-								<NavLink href='/signup'>Register</NavLink>
+								<Link href='/signup'>
+									<NavLink style={{ cursor: "pointer" }}>Register</NavLink>
+								</Link>
 							</NavItem>
 						</>
 					)}
