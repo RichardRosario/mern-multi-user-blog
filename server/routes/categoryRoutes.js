@@ -3,7 +3,7 @@ const router = express.Router();
 
 // validators
 import { runValidation } from "../validators/index.js";
-import { categoryValidator } from "../validators/category.js";
+import { categoryValidator } from "../validators/categoryValidator.js";
 // middlewares
 import { authencatedUser, adminUser } from "../middleware/auth.js";
 import { isSignedIn } from "../controllers/authController.js";
