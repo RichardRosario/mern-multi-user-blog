@@ -2,7 +2,12 @@ import express from "express";
 
 import { tagValidator } from "../validators/tagValidator.js";
 import { runValidation } from "../validators/index.js";
-import { createTag } from "../controllers/tagController";
+import {
+	createTag,
+	removeTag,
+	getTag,
+	getTags
+} from "../controllers/tagController.js";
 
 import { authencatedUser, adminUser } from "../middleware/auth.js";
 import { isSignedIn } from "../controllers/authController.js";
@@ -10,7 +15,7 @@ import { isSignedIn } from "../controllers/authController.js";
 const router = express.Router();
 
 router.post(
-	"/createTag",
+	"/tag/create",
 	tagValidator,
 	runValidation,
 	isSignedIn,
@@ -18,5 +23,9 @@ router.post(
 	adminUser,
 	createTag
 );
+
+router.delete("/tag/:slug", isSignedIn, authencatedUser, adminUser, removeTag);
+router.get("/tag/:slug", isSignedIn, authencatedUser, adminUser, getTag);
+router.get("/tag/getTags", isSignedIn, authencatedUser, adminUser, getTags);
 
 export default router;

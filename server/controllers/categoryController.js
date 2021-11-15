@@ -13,7 +13,7 @@ export const create = async (req, res) => {
 		const catExist = await Category.findOne({ slug });
 
 		if (catExist) {
-			res.status(400).json({ message: "Category already exist!" });
+			res.status(302).json({ message: "Category already exist!" });
 		}
 
 		const category = new Category({ name, slug });
