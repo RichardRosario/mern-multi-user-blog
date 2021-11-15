@@ -9,7 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 // import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import tagRoutes from "./routes/tagRoutes";
+import tagRoutes from "./routes/tagRoutes.js";
 
 dotenv.config();
 const app = express();
