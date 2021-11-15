@@ -48,7 +48,7 @@ export const getTag = async (req, res) => {
 
 		if (!tag) {
 			return res
-				.status(400)
+				.status(404)
 				.json({ message: "System cannot found the tag you were looking" });
 		}
 
