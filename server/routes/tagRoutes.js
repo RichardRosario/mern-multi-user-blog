@@ -9,8 +9,7 @@ import {
 	getTags
 } from "../controllers/tagController.js";
 
-import { authencatedUser, adminUser } from "../middleware/auth.js";
-import { isSignedIn } from "../controllers/authController.js";
+import { isSignedIn, authencatedUser, adminUser } from "../middleware/auth.js";
 
 const router = express.Router();
 

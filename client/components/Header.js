@@ -14,9 +14,11 @@ import {
 } from "reactstrap";
 import { isAuth, logout } from "../actions/auth";
 
-Router.onRouteChangeStart = () => NProgress.start();
-Router.onRouteChangeComplete = () => NProgress.done();
-Router.onRouteChangeError = () => NProgress.done();
+if (typeof window !== undefined) {
+	Router.onRouteChangeStart = () => NProgress.start();
+	Router.onRouteChangeComplete = () => NProgress.done();
+	Router.onRouteChangeError = () => NProgress.done();
+}
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
