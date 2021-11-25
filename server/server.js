@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 
 import dbConn from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-// import blogRoutes from "./routes/blogRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import tagRoutes from "./routes/tagRoutes.js";
@@ -28,6 +28,7 @@ app.use("/api", authRoutes);
 app.use("/api/blog", categoryRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blog", tagRoutes);
+app.use("/api/blog", blogRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () => console.log(`Server running at port ${port}`));

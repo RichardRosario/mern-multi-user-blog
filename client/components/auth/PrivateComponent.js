@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import { isAuth } from "../../actions/auth";
 
 const PrivateComponent = ({ children }) => {
-	const Router = useRouter();
+	const router = useRouter();
 	useEffect(() => {
 		if (!isAuth()) {
-			Router.push("/login");
+			router.push("/login");
 		}
 	}, []);
 

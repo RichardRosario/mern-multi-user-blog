@@ -1,6 +1,5 @@
 import fetch from "isomorphic-fetch";
 import { api } from "../config";
-import axios from "axios";
 import cookie from "js-cookie";
 
 export const signup = user => {
