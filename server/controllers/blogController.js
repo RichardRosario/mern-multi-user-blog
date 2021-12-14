@@ -1,7 +1,7 @@
 import Blog from "../models/blogModel.js";
 import Category from "../models/categoryModel.js";
 import Tag from "../models/tagModel.js";
-import { IncomingForm } from "formidable";
+import formidable from "formidable";
 import slugify from "slugify";
 import { stripHtml } from "string-strip-html";
 import _ from "lodash";
@@ -12,7 +12,7 @@ import fs from "fs";
 // private route
 export const createPost = async (req, res) => {
 	try {
-		const form = new IncomingForm();
+		let form = new formidable.IncomingForm();
 		form.keepExtensions = true;
 
 		form.parse(req, (err, fields, files) => {
@@ -22,27 +22,27 @@ export const createPost = async (req, res) => {
 
 			const { title, body, categories, tags } = fields;
 
-			const post = new Blog();
+			let post = new Blog();
 			post.title = title;
 			post.body = body;
 			post.categories = categories;
 			post.tags = tags;
-			post.slug = slugify(title);
+			post.slug = slugify(title).toLocaleLowerCase();
 			post.mtitle = `${title} | ${process.env.APP_NAME}`;
-			post.mdesc = stripHtml(body.substring(0, 160));
+			post.mdesc = stripHtml(body.substring(0, 160)).result;
 			post.postedBy = req.user._id;
 
 			if (files.photo) {
+				console.log(files.photo.filepath);
 				if (files.photo.size > 1000000) {
 					res.status(400).json({ error: "Image must be under 1mb in size" });
 				}
 
-				files.photo.data = fs.readFileSync(files.photo.path);
-				files.photo.contentType = files.photo.type;
-      }
-      
-      await post.save()
-      res.json(post)
+				post.photo.data = fs.readFileSync(files.photo.filepath);
+				post.photo.contentType = files.photo.type;
+			}
+			const newBlog = post.save();
+			res.json(newBlog);
 		});
 	} catch (error) {
 		console.log(error);
