@@ -12,6 +12,7 @@ import fs from "fs";
 // private route
 export const createPost = async (req, res) => {
 	try {
+		// initiate the blog form with formidable
 		let form = new formidable.IncomingForm();
 		form.keepExtensions = true;
 
@@ -21,7 +22,32 @@ export const createPost = async (req, res) => {
 			}
 
 			const { title, body, categories, tags } = fields;
+			// validate the blog post fields
+			if (!title || !title.length) {
+				return res.status(400).json({
+					error: "title is required"
+				});
+			}
 
+			if (!body || body.length < 200) {
+				return res.status(400).json({
+					error: "Content is too short"
+				});
+			}
+
+			if (!categories || categories.length === 0) {
+				return res.status(400).json({
+					error: "At least one category is required"
+				});
+			}
+
+			if (!tags || tags.length === 0) {
+				return res.status(400).json({
+					error: "At least one tag is required"
+				});
+			}
+
+			// create new blog post
 			let post = new Blog();
 			post.title = title;
 			post.body = body;
@@ -32,6 +58,11 @@ export const createPost = async (req, res) => {
 			post.mdesc = stripHtml(body.substring(0, 160)).result;
 			post.postedBy = req.user._id;
 
+			// split the category and tag and initiate
+			let arrayOfCategories = categories && categories.split(",");
+			let arrayOfTags = tags && tags.split(",");
+
+			// check for the photo
 			if (files.photo) {
 				console.log(files.photo.filepath);
 				if (files.photo.size > 1000000) {
@@ -41,8 +72,36 @@ export const createPost = async (req, res) => {
 				post.photo.data = fs.readFileSync(files.photo.filepath);
 				post.photo.contentType = files.photo.type;
 			}
-			const newBlog = post.save();
-			res.json(newBlog);
+			post.save((err, result) => {
+				if (err) {
+					return res.status(400).json(err);
+				}
+				// res.json(result);
+				Blog.findByIdAndUpdate(
+					result._id,
+					{ $push: { categories: arrayOfCategories } },
+					{ new: true }
+				).exec((err, result) => {
+					if (err) {
+						return res.status(400).json({ error: "Error saving the blog" });
+					} else {
+						Blog.findByIdAndUpdate(
+							result._id,
+							{ $push: { tags: arrayOfTags } },
+							{ new: true }
+						).exec((err, result) => {
+							if (err) {
+								return res
+									.status(400)
+									.json({ error: "Error saving blog post" });
+							} else {
+								res.json(result);
+							}
+						});
+					}
+				});
+				// console.log(updatePost);
+			});
 		});
 	} catch (error) {
 		console.log(error);

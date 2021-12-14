@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const { ObjectId } = mongoose.Schema;
 
 const blogSchema = new mongoose.Schema(
 	{
@@ -35,10 +34,10 @@ const blogSchema = new mongoose.Schema(
 			data: Buffer,
 			contentType: String
 		},
-		categories: [{ type: ObjectId, ref: "Category", required: true }],
-		tags: [{ type: ObjectId, ref: "Tag", required: true }],
+		categories: [{ type: mongoose.ObjectId, ref: "Category", required: true }],
+		tags: [{ type: mongoose.ObjectId, ref: "Tag", required: true }],
 		postedBy: {
-			type: ObjectId,
+			type: mongoose.ObjectId,
 			ref: "User"
 		}
 	},
