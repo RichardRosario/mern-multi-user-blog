@@ -64,7 +64,6 @@ export const createPost = async (req, res) => {
 
 			// check for the photo
 			if (files.photo) {
-				console.log(files.photo.filepath);
 				if (files.photo.size > 1000000) {
 					res.status(400).json({ error: "Image must be under 1mb in size" });
 				}
@@ -105,5 +104,21 @@ export const createPost = async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error);
+	}
+};
+
+// GET blog/posts
+// public route
+export const getPosts = async (req, res) => {
+	try {
+		const posts = await Blog.find({});
+
+		if (!posts) {
+			return res.status(400).json({ error: "No blog posts found" });
+		}
+
+		res.json(posts);
+	} catch (err) {
+		console.log(err.message);
 	}
 };
