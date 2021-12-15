@@ -122,3 +122,30 @@ export const getPosts = async (req, res) => {
 		console.log(err.message);
 	}
 };
+
+export const getPost = async (req, res) => {
+	try {
+		const post = await Blog.findById(req.params.id);
+		if (!post) {
+			return res.status(400).json({ error: "No blog post found!" });
+		} else {
+			return res.json(post);
+		}
+	} catch (err) {
+		console.log(err.message);
+	}
+};
+
+export const removePost = async (req, res) => {
+	try {
+		const post = await Blog.findById(req.params.id);
+		if (!post) {
+			return res.status(400).json({ message: "Blog post not found.." });
+		} else {
+			await post.remove();
+			res.json({ message: "Blog post has been deleted!" });
+		}
+	} catch (err) {
+		console.log(err.message);
+	}
+};
